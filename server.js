@@ -15,11 +15,18 @@ db.prepare(`
 `).run();
 
 // Beispiel: Nutzer hinzufügen (Route)
-app.post('/register', (req, res) => {
+app.get('/register', (req, res) => {
     const { username, password } = req.body;
     const insert = db.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
     insert.run(username, password);
     res.send("Registriert!");
+});
+
+
+// Beispiel: Nutzer hinzufügen (Route)
+app.get('/users', (req, res) => {
+    console.log("Users wurde ausgeführt. Hier kommt funktionalität, so dass Benutzer zurückgesendet werden")
+    res.send("USERS!!");
 });
 
 app.listen(3000, () => console.log("Server läuft auf Port 3000"));
