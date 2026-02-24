@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/manumehl-67/K-BOND/issues"
   },
-  "homepage": "https://github.com/manumehl-67/K-BOND#readme"
+  "homepage": "https://github.com/manumehl-67/K-BOND#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1"
+  }
 }
