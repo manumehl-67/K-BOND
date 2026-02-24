@@ -1,0 +1,21 @@
+{
+  "name": "k-bond",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manumehl-67/K-BOND.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/manumehl-67/K-BOND/issues"
+  },
+  "homepage": "https://github.com/manumehl-67/K-BOND#readme"
+}
