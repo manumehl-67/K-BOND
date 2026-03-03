@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
+
+#hp_title {
+    color: white;
+    font-family: 'Gabarito', sans-serif;
+    font-size: 200px;
+    margin-bottom: 0px;
+    margin-top: 200px;
+}
+
+#header {
+    text-align: center;
+    background-color: #9217ff;
+}
+
+#hp_subtitle {
+    color: white;
+    font-family: 'Gabarito', sans-serif;
+    font-size: 50px;
+    font-style: italic;
+    margin: 0px;
+}
+
+.buttons {
+    background-color: rgb(68, 0, 128);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+
+}
+
+.buttons:hover {
+    background-color: violet;
+    font-size: 110%;
+    transition: 0.3s ease;
+}
