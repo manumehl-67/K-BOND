@@ -35,6 +35,29 @@
 
 .buttons:hover {
     background-color: violet;
-    font-size: 110%;
+    scale: 1.05;
     transition: 0.3s ease;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 63vh;
+    width: 100%;
+    margin: auto 0;
+    gap: 5px;
+}
+
+#register_container>input {
+    width: 300px;
+    scale: 1.2;
+    padding: 9px 25px;
+    border-radius: 10px;
+    margin: 4px;
+}
+
+.hidden {
+    display: none !important;
 }
