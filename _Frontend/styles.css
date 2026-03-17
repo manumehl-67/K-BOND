@@ -21,6 +21,13 @@
     margin: 0px;
 }
 
+#hp_subtitle2 {
+    color: #9217ff;
+    font-family: 'Gabarito', sans-serif;
+    font-size: 42px;
+    font-style: italic;
+    margin: 0px;
+}
 .buttons {
     background-color: rgb(68, 0, 128);
     color: white;
@@ -44,10 +51,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 63vh;
+    height: 56vh;
     width: 100%;
-    margin: auto 0;
+    margin: auto;
     gap: 5px;
+    background-color: #fff0ff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+     
 }
 
 #register_container>input {
