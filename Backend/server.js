@@ -52,7 +52,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  const users = db.prepare('SELECT id, username, email, name, surname FROM users').all();
+  const users = db.prepare('SELECT id, username, password, email, name, surname FROM users').all();
   res.json(users);
 });
 
