@@ -1,12 +1,13 @@
 const express = require('express');
-const Database = require('better-sqlite3'); // Viel einfacher!
+const Database = require('better-sqlite3');
 const path = require('path');
+const bcrypt = require('bcrypt'); // 1. Schritt: Importieren
 
 const app = express();
 const cors = require('cors');
-const db = new Database('database.db'); // Erstellt die Datei sofort, wenn nicht vorhanden
+const db = new Database('database.db');
 
-// Tabelle erstellen
+// Tabelle (bleibt gleich, aber stell sicher, dass die .db Datei gelöscht wurde!)
 db.prepare(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,31 +24,33 @@ const insert = db.prepare(`
   VALUES (@username, @password, @email, @name, @surname)
 `);
 
-const selectAll = db.prepare('SELECT * FROM users');
-
 app.use(cors());
 app.use(express.json());
 
-app.post('/register', (req, res) => {
-  // Destructuring der neuen Felder aus dem Body
+// 2. Schritt: Route auf 'async' setzen
+app.post('/register', async (req, res) => {
   const { username, password, email, name, surname } = req.body;
 
   try {
+    // 3. Schritt: Passwort hashen
+    const saltRounds = 10; // Stärke der Verschlüsselung
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // 4. Schritt: Das GEHASHte Passwort in die DB schreiben
     insert.run({
       username: username,
-      password: password,
+      password: hashedPassword,
       email: email,
       name: name,
       surname: surname
     });
 
-    res.status(201).send("User erfolgreich mit allen Details erstellt");
+    res.status(201).send("User sicher erstellt!");
   } catch (err) {
-    res.status(400).send("Fehler beim Erstellen des Users: " + err.message);
+    res.status(400).send("Fehler: " + err.message);
   }
 });
 
-// Beispiel: Nutzer hinzufügen (Route)
 app.get('/users', (req, res) => {
   const users = db.prepare('SELECT id, username, email, name, surname FROM users').all();
   res.json(users);
