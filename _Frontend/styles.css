@@ -6,6 +6,7 @@
     font-size: 200px;
     margin-bottom: 0px;
     margin-top: 200px;
+    cursor: default;
 }
 
 #header {
@@ -28,6 +29,22 @@
     font-style: italic;
     margin: 0px;
 }
+
+#registry_title {
+    color: white;
+    font-family: 'Gabarito', sans-serif;
+    font-size: 75px;
+    margin-bottom: 0px;
+    margin-top: 200px;
+    cursor: pointer;
+}
+
+#registry_title:hover {
+    color: violet;
+    scale: 1.05;
+    transition: 0.3s ease;
+}
+
 .buttons {
     background-color: rgb(68, 0, 128);
     color: white;
@@ -60,7 +77,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-width: 400px;
-     
+
 }
 
 #register_container>input {
