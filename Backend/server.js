@@ -56,4 +56,33 @@ app.get('/users', (req, res) => {
   res.json(users);
 });
 
+// Login-Route (Muss in die server.js!)
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // 1. User suchen
+    const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
+
+    if (!user) {
+      return res.status(401).json({ error: "Benutzer nicht gefunden" });
+    }
+
+    // 2. Passwort vergleichen (Eingabe vs. Hash aus DB)
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+      // Erfolg: Schicke User-Daten (ohne Passwort!) zurück
+      res.json({
+        message: "Login erfolgreich",
+        user: { surname: user.surname, username: user.username }
+      });
+    } else {
+      res.status(401).json({ error: "Passwort falsch" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(3000, () => console.log("Server läuft auf Port 3000"));

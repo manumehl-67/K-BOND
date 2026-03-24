@@ -11,21 +11,34 @@
 </head>
 
 <body id="header">
+  <div id="user_profile" class="hidden">
+    <h2 id="welcome_text"></h2>
+    <button id="logout_button" class="buttons">Logout</button>
+    <button id="edit_profile_button" class="buttons">Profil bearbeiten</button>
+  </div>
+
   <h1 id="hp_title">K-BOND</h1>
   <h2 id="registry_title" class="hidden">K-BOND</h2>
-  <h2 id="hp_subtitle">Bond with your fellow Kanti mates!</h2>
+  <h2 id="hp_subtitle" class="subtitles">Bond with your fellow Kanti mates!</h2>
 
-  <button id="login_button" class="buttons">login</button>
+  <button id="login_button" class="buttons">log in</button>
   <button id="register_button1" class="buttons">register</button>
 
   <div class="container hidden" id="register_container">
-    <h2 id="hp_subtitle2">Registration</h2>
+    <h2 id="registry_subtitle" class="subtitles">Registration</h2>
     <input id="username_input" placeholder="Username">
     <input id="email_input" placeholder="E-Mail">
     <input id="password_input" placeholder="Password" type="password">
     <input id="name_input" placeholder="Name">
     <input id="surname_input" placeholder="Surname">
     <button id="register_button2" class="buttons">Send</button>
+  </div>
+
+  <div class="container hidden" id="login_container">
+    <h2 id="login_subtitle" class="subtitles">Login</h2>
+    <input id="login_username" placeholder="Username">
+    <input id="login_password" placeholder="Password" type="password">
+    <button id="login_button2" class="buttons">log in</button>
   </div>
 
 

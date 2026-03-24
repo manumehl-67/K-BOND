@@ -22,7 +22,7 @@
     margin: 0px;
 }
 
-#hp_subtitle2 {
+.subtitles {
     color: #9217ff;
     font-family: 'Gabarito', sans-serif;
     font-size: 42px;
@@ -84,6 +84,22 @@
     margin: 4px;
 }
 
+#login_container>input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin: 4px;
+}
+
+
 .hidden {
     display: none !important;
+}
+
+#welcome_text {
+    font-family: 'Gabarito', sans-serif;
+    font-size: 50px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 134px;
 }
