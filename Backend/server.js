@@ -75,7 +75,7 @@ app.post('/login', async (req, res) => {
       // Erfolg: Schicke User-Daten (ohne Passwort!) zurück
       res.json({
         message: "Login erfolgreich",
-        user: { surname: user.surname, username: user.username }
+        user: { id: user.id, name: user.name, surname: user.surname, username: user.username }
       });
     } else {
       res.status(401).json({ error: "Passwort falsch" });

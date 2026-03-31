@@ -132,9 +132,9 @@ login_button_submit.addEventListener("click", () => {
         .then(userData => {
             // Neu: Daten im Browser merken
             localStorage.setItem("loggedInUser", JSON.stringify(userData.user));
-
             // UI aktualisieren (wie bisher)
             updateUI(userData.user);
+            window.location.href = 'dashboard.html';
         })
         .catch(error => {
             alert("Fehler: Benutzername oder Passwort falsch.");
