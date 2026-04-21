@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/K_BOND_icon.png" type="image/png">
     <title>K-BOND Dashboard</title>
-    <link rel="stylesheet" href="styles.css">   
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body id="header">
-  <div id="user_profile">
-    <h2 id="welcome_text"></h2>
-    <button id="logout_button" class="buttons">Logout</button>
-    <button id="edit_profile_button" class="buttons">Profil bearbeiten</button>
-  </div>
+    <div id="user_profile">
+        <h2 id="welcome_text"></h2>
+        <img id="display_profile_pic" src="assets/default-avatar.png"
+            style="width:200px; height:200px; border-radius:50%;">
+        <div></div>
+        <button id="logout_button" class="buttons">Logout</button>
+        <button id="edit_profile_button" class="buttons">Profil bearbeiten</button>
+    </div>
 
-<div id="edit_container" class="hidden">
-    <h3>Edit profile</h3>
-    <input type="number" id="edit_age" placeholder="Age">
-    <input type="text" id="edit_interests" placeholder="Personal interests (Hobbies, etc.)">
-    
-    <select id="edit_relationship">
-        <option value="single">Single</option>
-        <option value="dating">Dating</option>
-        <option value="relationship">In a relationship</option>
-        <option value="complicated">It's complicated</option>
-    </select>
+    <div id="edit_container" class="hidden">
+        <h3>Edit profile</h3>
+        <div id="image_upload_section">
+            <p>Profilbild ändern:</p>
+            <input type="file" id="profile_pic_input" accept="image/*">
+        </div>
+        <input type="number" id="edit_age" placeholder="Age">
+        <input type="text" id="edit_interests" placeholder="Personal interests (Hobbies, etc.)">
 
-    <button id="save_profile_button" class="buttons">Save</button>
-    <button id="cancel_edit_button" class="buttons">Cancel</button>
-</div>
+        <select id="edit_relationship">
+            <option value="single">Single</option>
+            <option value="dating">Dating</option>
+            <option value="relationship">In a relationship</option>
+            <option value="complicated">It's complicated</option>
+        </select>
+
+        <button id="save_profile_button" class="buttons">Save</button>
+        <button id="cancel_edit_button" class="buttons">Cancel</button>
+    </div>
     <script src="dashboard.js"></script>
 </body>
+
 </html>

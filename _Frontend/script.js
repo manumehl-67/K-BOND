@@ -40,9 +40,7 @@ function updateUI(user) {
     login_container.classList.add("hidden");
     registry_title.classList.add("hidden");
 
-    // Zeige Profil oben rechts
-    user_profile.classList.remove("hidden");
-    welcome_text.innerText = "Willkommen zurück, " + user.surname + "!";
+
 }
 //EVENT-LISTENERS
 

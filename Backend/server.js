@@ -7,6 +7,20 @@ const app = express();
 const cors = require('cors');
 const db = new Database('database.db');
 
+const multer = require('multer');
+
+// Konfiguration: Wo und wie werden Bilder gespeichert?
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Pfad zum Ordner
+  },
+  filename: (req, file, cb) => {
+    // Name: Zeitstempel + Originalname (verhindert Duplikate)
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
+
 // Tabelle (bleibt gleich, aber stell sicher, dass die .db Datei gelöscht wurde!)
 db.prepare(`
   CREATE TABLE IF NOT EXISTS users (
@@ -18,7 +32,8 @@ db.prepare(`
     surname TEXT NOT NULL,
     age INTEGER,
     interests TEXT,
-    relationship TEXT
+    relationship TEXT,
+    profile_pic TEXT
   )
 `).run();
 
@@ -29,6 +44,33 @@ const insert = db.prepare(`
 
 app.use(cors());
 app.use(express.json());
+
+//BILD UPLOAD//
+app.use('/uploads', express.static('uploads'));
+
+// Neue Route für den Bildupload
+app.post('/upload-profile-pic', upload.single('profilePic'), (req, res) => {
+  const { username } = req.body;
+  const imagePath = `/uploads/${req.file.filename}`; // Der Link zum Bild
+
+  try {
+    const update = db.prepare('UPDATE users SET profile_pic = ? WHERE username = ?');
+    update.run(imagePath, username);
+    res.json({ message: "Bild hochgeladen!", imagePath: imagePath });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/profile-pic/:username", (req, res) => {
+  const { username } = req.params;
+  const user = db.prepare('SELECT profile_pic FROM users WHERE username = ?').get(username);
+  if (user.profile_pic) {
+    res.sendFile(path.resolve("../Backend/" + user.profile_pic));
+  } else {
+    res.status(404).json({ error: "Bild nicht gefunden" });
+  }
+});
 
 // 2. Schritt: Route auf 'async' setzen
 app.post('/register', async (req, res) => {
@@ -89,25 +131,25 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/update-profile', (req, res) => {
-    const { username, age, interests, relationship } = req.body;
+  const { username, age, interests, relationship } = req.body;
 
-    try {
-        const update = db.prepare(`
+  try {
+    const update = db.prepare(`
             UPDATE users 
             SET age = ?, interests = ?, relationship = ? 
             WHERE username = ?
         `);
-        
-        const result = update.run(age, interests, relationship, username);
 
-        if (result.changes > 0) {
-            res.json({ message: "Profil erfolgreich aktualisiert!" });
-        } else {
-            res.status(404).json({ error: "Benutzer nicht gefunden" });
-        }
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    const result = update.run(age, interests, relationship, username);
+
+    if (result.changes > 0) {
+      res.json({ message: "Profil erfolgreich aktualisiert!" });
+    } else {
+      res.status(404).json({ error: "Benutzer nicht gefunden" });
     }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(3000, () => console.log("Server läuft auf Port 3000"));
