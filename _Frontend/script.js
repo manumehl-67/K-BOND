@@ -133,7 +133,7 @@ login_button_submit.addEventListener("click", () => {
             // Neu: Daten im Browser merken
             localStorage.setItem("loggedInUser", JSON.stringify(userData.user));
             // UI aktualisieren (wie bisher)
-            updateUI(userData.user);
+            //updateUI(userData.user);
             window.location.href = 'dashboard.html';
         })
         .catch(error => {
@@ -142,7 +142,3 @@ login_button_submit.addEventListener("click", () => {
         });
 });
 
-logout_button.addEventListener("click", () => {
-    localStorage.removeItem("loggedInUser"); // Speicher leeren
-    location.reload(); // Seite frisch laden
-});
