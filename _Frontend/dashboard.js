@@ -30,7 +30,6 @@ document.getElementById("logout_button").addEventListener("click", () => {
 // 1. Klick auf "Profil bearbeiten" -> Zeigt das Formular
 editBtn.addEventListener("click", () => {
     editContainer.classList.remove("hidden");
-    // Optional: Hier könntest du bereits vorhandene Daten in die Felder laden
 });
 
 // 2. Klick auf "Abbrechen" -> Versteckt das Formular
@@ -47,4 +46,40 @@ saveBtn.addEventListener("click", async () => {
         relationship: document.getElementById("edit_relationship").value
     };
 });
-    // Hier kommt später der fetch-Aufruf ans Backend
+
+// In der dashboard.js innerhalb des saveBtn Event-Listeners:
+
+saveBtn.addEventListener("click", async () => {
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    const updatedData = {
+        username: loggedInUser.username, // Wir brauchen den Namen, um den richtigen DB-Eintrag zu finden
+        age: document.getElementById("edit_age").value,
+        interests: document.getElementById("edit_interests").value,
+        relationship: document.getElementById("edit_relationship").value
+    };
+
+    // DER FETCH-AUFRUF:
+    try {
+        const response = await fetch('http://localhost:3000/update-profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(result.message);
+            // Wir aktualisieren auch den LocalStorage, damit die neuen Daten dort auch liegen
+            const newUserObj = { ...loggedInUser, ...updatedData };
+            localStorage.setItem("loggedInUser", JSON.stringify(newUserObj));
+            
+            editContainer.classList.add("hidden");
+        } else {
+            alert("Fehler beim Speichern: " + result.error);
+        }
+    } catch (error) {
+        console.error("Netzwerkfehler:", error);
+    }
+});

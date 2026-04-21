@@ -15,7 +15,10 @@ db.prepare(`
     password TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
-    surname TEXT NOT NULL
+    surname TEXT NOT NULL,
+    age INTEGER,
+    interests TEXT,
+    relationship TEXT
   )
 `).run();
 
@@ -83,6 +86,28 @@ app.post('/login', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+app.post('/update-profile', (req, res) => {
+    const { username, age, interests, relationship } = req.body;
+
+    try {
+        const update = db.prepare(`
+            UPDATE users 
+            SET age = ?, interests = ?, relationship = ? 
+            WHERE username = ?
+        `);
+        
+        const result = update.run(age, interests, relationship, username);
+
+        if (result.changes > 0) {
+            res.json({ message: "Profil erfolgreich aktualisiert!" });
+        } else {
+            res.status(404).json({ error: "Benutzer nicht gefunden" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 app.listen(3000, () => console.log("Server läuft auf Port 3000"));
