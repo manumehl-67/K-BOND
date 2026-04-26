@@ -93,3 +93,42 @@ saveBtn.addEventListener("click", async () => {
         console.error("Fehler:", error);
     }
 });
+
+const searchInput = document.getElementById("search_input");
+const searchResults = document.getElementById("search_results");
+
+searchInput.addEventListener("input", async () => {
+    const query = searchInput.value;
+
+    if (query.length < 2) { // Suche startet erst ab 2 Buchstaben
+        searchResults.innerHTML = "";
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/search?q=${query}`);
+        const users = await response.json();
+
+        // Ergebnisse anzeigen
+        searchResults.innerHTML = ""; // Vorherige Ergebnisse löschen
+
+        users.forEach(user => {
+            const userDiv = document.createElement("div");
+            userDiv.className = "search-item";
+            userDiv.innerHTML = `
+                <p><strong>${user.name} ${user.surname}</strong> (@${user.username})</p>
+                <p><small>Interessen: ${user.interests || 'Keine Angaben'}</small></p>
+                <button class="buttons" onclick="viewProfile(${user.id})">View profile</button>
+                <hr>
+            `;
+            searchResults.appendChild(userDiv);
+        });
+    } catch (error) {
+        console.error("Fehler bei der Suche:", error);
+    }
+});
+
+// Platzhalter-Funktion für die nächste User Story
+function viewProfile(userId) {
+    alert("Profil-Details für User-ID " + userId + " folgen in der nächsten Story!");
+}
