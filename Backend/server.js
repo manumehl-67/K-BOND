@@ -152,4 +152,26 @@ app.post('/update-profile', (req, res) => {
   }
 });
 
+app.get('/search', (req, res) => {
+    const query = req.query.q; // Der Suchbegriff aus der URL
+    
+    if (!query) {
+        return res.json([]);
+    }
+
+    try {
+        // Wir suchen im username ODER im name
+        // %query% bedeutet: Text davor oder danach ist egal
+        const users = db.prepare(`
+            SELECT id, username, name, surname, interests 
+            FROM users 
+            WHERE username LIKE ? OR name LIKE ?
+        `).all(`%${query}%`, `%${query}%`);
+
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.listen(3000, () => console.log("Server läuft auf Port 3000"));
