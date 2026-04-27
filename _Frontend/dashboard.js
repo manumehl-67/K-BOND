@@ -119,6 +119,7 @@ searchInput.addEventListener("input", async () => {
                 <p><strong>${user.name} ${user.surname}</strong> (@${user.username})</p>
                 <p><small>Interessen: ${user.interests || 'Keine Angaben'}</small></p>
                 <button class="buttons" onclick="viewProfile(${user.id})">View profile</button>
+                <button class="buttons follow-btn" onclick="followUser(${user.id})">Folgen</button>
                 <hr>
             `;
             searchResults.appendChild(userDiv);
@@ -127,6 +128,94 @@ searchInput.addEventListener("input", async () => {
         console.error("Fehler bei der Suche:", error);
     }
 });
+
+// In dashboard.js die displayUsers Funktion anpassen
+function displayUsers(users) {
+    const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    searchResults.innerHTML = ""; 
+
+    users.forEach(user => {
+        if (user.id === currentUser.id) return; // Sich selbst nicht anzeigen
+
+        const userDiv = document.createElement("div");
+        userDiv.className = "search-item";
+        userDiv.innerHTML = `
+            <p><strong>${user.name} ${user.surname}</strong> (@${user.username})</p>
+            <div class="button-group">
+                <button class="buttons" onclick="viewProfile(${user.id})">Profil ansehen</button>
+                <button class="buttons follow-btn" onclick="followUser(${user.id})">Folgen</button>
+            </div>
+        `;
+        searchResults.appendChild(userDiv);
+    });
+}
+
+// FUNKTION: Jemandem folgen
+async function followUser(followingId) {
+    const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    
+    try {
+        const response = await fetch('http://localhost:3000/follow', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ followerId: currentUser.id, followingId: followingId })
+        });
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+            // Hier könnte man den eigenen Counter im UI sofort aktualisieren
+        } else {
+            alert(result.error);
+        }
+    } catch (error) {
+        console.error("Follow-Fehler:", error);
+    }
+}
+
+// FUNKTION: Profil-Details in einem Modal/Pop-up anzeigen
+async function viewProfile(userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/user-profile/${userId}`);
+        const user = await response.json();
+
+        // Einfaches Alert für den Anfang (oder baue ein schönes Div/Modal)
+        alert(`
+            Profil von ${user.name} ${user.surname}
+            -----------------------------------
+            Username: @${user.username}
+            Alter: ${user.age || 'k.A.'}
+            Interessen: ${user.interests || 'Keine'}
+            Status: ${user.relationship || 'k.A.'}
+            -----------------------------------
+            Follower: ${user.followers} | Folgt: ${user.following}
+        `);
+    } catch (error) {
+        alert("Fehler beim Laden des Profils");
+    }
+}
+
+// Funktion, um die eigenen Follower-Zahlen zu laden
+async function loadMyStats() {
+    const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!currentUser) return;
+
+    try {
+        const response = await fetch(`http://localhost:3000/user-profile/${currentUser.id}`);
+        const data = await response.json();
+        
+        // Den Text im HTML aktualisieren (ID: my_stats muss im HTML existieren)
+        const statsElement = document.getElementById("my_stats");
+        if (statsElement) {
+            statsElement.innerText = `Follower: ${data.followers} | Gefolgt: ${data.following}`;
+        }
+    } catch (error) {
+        console.error("Fehler beim Laden der Stats:", error);
+    }
+}
+
+// Diese Funktion beim Start aufrufen
+loadMyStats();  
+
 
 // Platzhalter-Funktion für die nächste User Story
 function viewProfile(userId) {
