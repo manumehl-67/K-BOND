@@ -37,6 +37,17 @@ db.prepare(`
   )
 `).run();
 
+// Neue Tabelle für die Follower-Beziehungen
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS follows (
+    follower_id INTEGER,
+    following_id INTEGER,
+    PRIMARY KEY (follower_id, following_id),
+    FOREIGN KEY (follower_id) REFERENCES users(id),
+    FOREIGN KEY (following_id) REFERENCES users(id)
+  )
+`).run();
+
 const insert = db.prepare(`
   INSERT INTO users (username, password, email, name, surname) 
   VALUES (@username, @password, @email, @name, @surname)
@@ -171,6 +182,36 @@ app.get('/search', (req, res) => {
         res.json(users);
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+});
+
+// 1. Jemandem folgen
+app.post('/follow', (req, res) => {
+    const { followerId, followingId } = req.body;
+    if (followerId === followingId) return res.status(400).json({ error: "Du kannst dir nicht selbst folgen" });
+
+    try {
+        const insert = db.prepare('INSERT INTO follows (follower_id, following_id) VALUES (?, ?)');
+        insert.run(followerId, followingId);
+        res.json({ message: "Erfolgreich gefolgt!" });
+    } catch (err) {
+        res.status(400).json({ error: "Du folgst dieser Person bereits" });
+    }
+});
+
+// 2. Profil-Details eines anderen Users abrufen
+app.get('/user-profile/:id', (req, res) => {
+    const userId = req.params.id;
+    try {
+        const user = db.prepare('SELECT id, username, name, surname, age, interests, relationship FROM users WHERE id = ?').get(userId);
+        
+        // Zähler berechnen
+        const followers = db.prepare('SELECT COUNT(*) as count FROM follows WHERE following_id = ?').get(userId).count;
+        const following = db.prepare('SELECT COUNT(*) as count FROM follows WHERE follower_id = ?').get(userId).count;
+
+        res.json({ ...user, followers, following });
+    } catch (err) {
+        res.status(404).json({ error: "User nicht gefunden" });
     }
 });
 
