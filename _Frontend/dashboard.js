@@ -1,5 +1,10 @@
 //GLOBAL VARIABLES
 let edit_profile_button = document.getElementById("edit_profile_button")
+let surname_name = document.getElementById("surname_name");
+let profile_username = document.getElementById("profile_username");
+let display_age = document.getElementById("display_age");
+let display_interests = document.getElementById("display_interests");
+let display_relationship = document.getElementById("display_relationship");
 const userJson = localStorage.getItem("loggedInUser");
 const editBtn = document.getElementById("edit_profile_button");
 const editContainer = document.getElementById("edit_container");
@@ -16,6 +21,11 @@ if (userJson) {
 
     document.getElementById("welcome_text").innerText = `Welcome back, ${displayName}!`;
     document.getElementById("display_profile_pic").src = `http://localhost:3000/profile-pic/${user.username}`;
+    document.getElementById("surname_name").innerText = `${user.surname}, ${user.name}`;
+    document.getElementById("profile_username").innerText = `@${user.username}`;
+    document.getElementById("display_age").innerText = user.age || "Not specified";
+    document.getElementById("display_interests").innerText = user.interests || "Not specified";
+    document.getElementById("display_relationship").innerText = user.relationship || "Not specified";
 } else {
     // Falls kein User im Speicher ist -> zurück zum Login
     window.location.href = 'index.html';
@@ -37,6 +47,7 @@ editBtn.addEventListener("click", () => {
 cancelBtn.addEventListener("click", () => {
     editContainer.classList.add("hidden");
 });
+
 
 // 3. Klick auf "Speichern" -> Daten ans Backend senden
 saveBtn.addEventListener("click", async () => {
@@ -216,8 +227,41 @@ async function loadMyStats() {
 // Diese Funktion beim Start aufrufen
 loadMyStats();  
 
+// Erweiterte viewProfile-Funktion mit Modal
+async function viewProfile(userId) {
+    const modal = document.getElementById("profile_modal");
+    const closeBtn = document.getElementById("close_modal");
 
-// Platzhalter-Funktion für die nächste User Story
-function viewProfile(userId) {
-    alert("Profil-Details für User-ID " + userId + " folgen in der nächsten Story!");
+    try {
+        const response = await fetch(`http://localhost:3000/user-profile/${userId}`);
+        const user = await response.json();
+
+        // Daten in das Modal füllen
+        document.getElementById("modal_name").innerText = `${user.name} ${user.surname}`;
+        document.getElementById("modal_username").innerText = `@${user.username}`;
+        document.getElementById("modal_age").innerText = user.age || 'k.A.';
+        document.getElementById("modal_interests").innerText = user.interests || 'Keine';
+        document.getElementById("modal_relationship").innerText = user.relationship || 'k.A.';
+        document.getElementById("modal_stats").innerText = `Follower: ${user.followers} | Gefolgt: ${user.following}`;
+        
+        // Profilbild laden (Nutzt die Route aus deinem Backend)
+        document.getElementById("modal_profile_pic").src = `http://localhost:3000/profile-pic/${user.username}`;
+
+        // Follow-Button Funktionalität im Modal
+        const followBtn = document.getElementById("modal_follow_btn");
+        followBtn.onclick = () => followUser(user.id);
+
+        // Modal anzeigen
+        modal.classList.remove("hidden");
+
+        // Schließen-Logik
+        closeBtn.onclick = () => modal.classList.add("hidden");
+        window.onclick = (event) => {
+            if (event.target == modal) modal.classList.add("hidden");
+        };
+
+    } catch (error) {
+        console.error("Fehler beim Laden des Profils:", error);
+        alert("Profil konnte nicht geladen werden.");
+    }
 }

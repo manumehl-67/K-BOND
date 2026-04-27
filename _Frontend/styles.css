@@ -103,3 +103,76 @@
     text-align: center;
     margin-top: 134px;
 }
+
+/* Modal Hintergrund */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#display_profile_pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #9217ff;
+}
+
+#surname_name {
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+    font-family: 'Gabarito', sans-serif;
+    margin-bottom: 5px;
+}
+
+#profile_username {
+    font-size: 20px;
+    color: #ffffff;
+    font-family: 'Gabarito', sans-serif;
+    margin-bottom: 20px;
+}
+/* Modal Inhalt */
+.modal-content {
+    background-color: #fff0ff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#modal_profile_pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #9217ff;
+    margin-bottom: 15px;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #9217ff;
+}
+
+.profile-details {
+    text-align: left;
+    margin: 20px 0;
+    color: #333;
+}

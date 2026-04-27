@@ -129,10 +129,20 @@ app.post('/login', async (req, res) => {
 
     if (match) {
       // Erfolg: Schicke User-Daten (ohne Passwort!) zurück
-      res.json({
-        message: "Login erfolgreich",
-        user: { id: user.id, name: user.name, surname: user.surname, username: user.username }
-      });
+      // server.js -> app.post('/login', ...)
+res.json({
+    message: 'Login erfolgreich',
+    user: { 
+        id: user.id, 
+        username: user.username, 
+        name: user.name, 
+        surname: user.surname,
+        age: user.age,
+        interests: user.interests,
+        relationship: user.relationship,
+        profile_pic: user.profile_pic
+    }
+});
     } else {
       res.status(401).json({ error: "Passwort falsch" });
     }
@@ -200,12 +210,13 @@ app.post('/follow', (req, res) => {
 });
 
 // 2. Profil-Details eines anderen Users abrufen
+// In server.js
 app.get('/user-profile/:id', (req, res) => {
     const userId = req.params.id;
     try {
-        const user = db.prepare('SELECT id, username, name, surname, age, interests, relationship FROM users WHERE id = ?').get(userId);
+        // profile_pic zum SELECT hinzugefügt
+        const user = db.prepare('SELECT id, username, name, surname, age, interests, relationship, profile_pic FROM users WHERE id = ?').get(userId);
         
-        // Zähler berechnen
         const followers = db.prepare('SELECT COUNT(*) as count FROM follows WHERE following_id = ?').get(userId).count;
         const following = db.prepare('SELECT COUNT(*) as count FROM follows WHERE follower_id = ?').get(userId).count;
 
