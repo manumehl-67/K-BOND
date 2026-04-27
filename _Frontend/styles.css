@@ -104,6 +104,56 @@
     margin-top: 134px;
 }
 
+/* DASHBOARD STYLES */
+
+.dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Gemeinsames Design für Inhalts-Sektionen (Karten-Look) */
+#user_profile, #search_container, #edit_container {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    font-family: 'Gabarito', sans-serif;
+}
+
+#profile_information {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+h3 {
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+/* --- Formularelemente (Eingabefelder, Selects) --- */
+input[type="text"], 
+input[type="number"], 
+select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box; /* Wichtig für korrekte Breite */
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #fff0ff;
+    box-shadow: 0 0 5px rgba(255, 240, 255, 0.5);
+}
+
 /* Modal Hintergrund */
 .modal {
     position: fixed;
@@ -116,6 +166,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Gabarito', sans-serif;
 }
 
 #display_profile_pic {
@@ -142,7 +193,8 @@
 }
 /* Modal Inhalt */
 .modal-content {
-    background-color: #fff0ff;
+    background-color: #fff;
+    color: #333;
     padding: 30px;
     border-radius: 15px;
     width: 90%;
@@ -158,9 +210,22 @@
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #9217ff;
-    margin-bottom: 15px;
 }
 
+#modal_name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#modal_username {
+    font-size: 18px;
+    color: #555;
+    margin-top: 0px;
+}
+    
 .close {
     position: absolute;
     right: 20px;
@@ -171,8 +236,45 @@
     color: #9217ff;
 }
 
+
 .profile-details {
     text-align: left;
     margin: 20px 0;
     color: #333;
+    font-family: 'Gabarito', sans-serif;
+}
+
+.search-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid white;
+    border-radius: 15px;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.search-item:hover {
+    transform: translateY(-3px);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.search-item p {
+    margin: 5px 0;
+    color: white;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#search_results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
 }

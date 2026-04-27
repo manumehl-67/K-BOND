@@ -21,7 +21,7 @@ if (userJson) {
 
     document.getElementById("welcome_text").innerText = `Welcome back, ${displayName}!`;
     document.getElementById("display_profile_pic").src = `http://localhost:3000/profile-pic/${user.username}`;
-    document.getElementById("surname_name").innerText = `${user.surname}, ${user.name}`;
+    document.getElementById("surname_name").innerText = `${user.surname} ${user.name}`;
     document.getElementById("profile_username").innerText = `@${user.username}`;
     document.getElementById("display_age").innerText = user.age || "Not specified";
     document.getElementById("display_interests").innerText = user.interests || "Not specified";
@@ -123,15 +123,20 @@ searchInput.addEventListener("input", async () => {
         // Ergebnisse anzeigen
         searchResults.innerHTML = ""; // Vorherige Ergebnisse löschen
 
+        // In dashboard.js innerhalb der users.forEach Schleife:
         users.forEach(user => {
             const userDiv = document.createElement("div");
             userDiv.className = "search-item";
+            
+            // Wir bauen die Buttons in ein eigenes Div für besseres Styling
             userDiv.innerHTML = `
-                <p><strong>${user.name} ${user.surname}</strong> (@${user.username})</p>
+                <p style="font-size: 1.2em;"><strong>${user.name} ${user.surname}</strong></p>
+                <p>@${user.username}</p>
                 <p><small>Interessen: ${user.interests || 'Keine Angaben'}</small></p>
-                <button class="buttons" onclick="viewProfile(${user.id})">View profile</button>
-                <button class="buttons follow-btn" onclick="followUser(${user.id})">Folgen</button>
-                <hr>
+                <div class="button-group">
+                    <button class="buttons" onclick="viewProfile(${user.id})">Profil ansehen</button>
+                    <button class="buttons follow-btn" onclick="followUser(${user.id})">Folgen</button>
+                </div>
             `;
             searchResults.appendChild(userDiv);
         });
@@ -239,9 +244,9 @@ async function viewProfile(userId) {
         // Daten in das Modal füllen
         document.getElementById("modal_name").innerText = `${user.name} ${user.surname}`;
         document.getElementById("modal_username").innerText = `@${user.username}`;
-        document.getElementById("modal_age").innerText = user.age || 'k.A.';
-        document.getElementById("modal_interests").innerText = user.interests || 'Keine';
-        document.getElementById("modal_relationship").innerText = user.relationship || 'k.A.';
+        document.getElementById("modal_age").innerText = user.age || '-';
+        document.getElementById("modal_interests").innerText = user.interests || '-';
+        document.getElementById("modal_relationship").innerText = user.relationship || '-';
         document.getElementById("modal_stats").innerText = `Follower: ${user.followers} | Gefolgt: ${user.following}`;
         
         // Profilbild laden (Nutzt die Route aus deinem Backend)
