@@ -9,24 +9,32 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body id="header">
-    <div id="user_profile">
-        <h2 id="welcome_text"></h2>
-        <img id="display_profile_pic" src="assets/default-avatar.png"
-            style="width:200px; height:200px; border-radius:50%;">
-        <div></div>
-        <p id="my_stats">Follower: 0 | Gefolgt: 0</p>
-        <button id="logout_button" class="buttons">Logout</button>
-        <button id="edit_profile_button" class="buttons">Edit Profile</button>
-        
+<body id="header" class="dashboard-layout">
+
+    <h2 id="welcome_text"></h2>
+    <div class="top-section">
+        <div id="user_profile">
+            <img id="display_profile_pic" src="assets/default-avatar.png" alt="Profile Picture">
+            <div id="surname_name">surname name</div>
+            <div id="profile_username">@username</div>
+            <p id="my_stats">Follower: 0 | Gefolgt: 0</p>
+            <button id="logout_button" class="buttons">Logout</button>
+            <button id="edit_profile_button" class="buttons">Edit Profile</button>
+            <div id="profile_information">
+                <div>age: <span id="display_age"></span></div>
+                <div>interests: <span id="display_interests"></span></div>
+                <div>relationship status: <span id="display_relationship"></span></div>
+            </div>
+        </div>
+
+        <div id="following_list_container">
+            <h3>Ich folge</h3>
+            <div id="following_list">
+                <p class="empty-msg">Du folgst noch niemandem.</p>
+        </div>
+    </div>
     </div>
 
-    <div id="search_container">
-        <h3>Find users</h3>
-        <input type="text" id="search_input" placeholder="Search by username or name">
-        <div id="search_results"></div> 
-    </div>
-    
     <div id="edit_container" class="hidden">
         <h3>Edit profile</h3>
         <div id="image_upload_section">
@@ -45,7 +53,34 @@
 
         <button id="save_profile_button" class="buttons">Save</button>
         <button id="cancel_edit_button" class="buttons">Cancel</button>
+    
     </div>
+
+    <div id="search_container">
+        <h3>Find users</h3>
+        <input type="text" id="search_input" placeholder="Search by username or name">
+        <div id="search_results"></div> 
+    </div>
+    
+
+    <div id="profile_modal" class="modal hidden">
+    <div class="modal-content">
+        <span id="close_modal" class="close">&times;</span>
+        <div id="modal_user_info">
+            <img id="modal_profile_pic" src="assets/default-avatar.png" alt="Profile Picture">
+            <h2 id="modal_name">Name Surname</h2>
+            <p id="modal_username">@username</p>
+            <p id="modal_stats">Follower: 0 | Gefolgt: 0</p>
+            <hr>
+            <div class="profile-details">
+                <p><strong>age:</strong> <span id="modal_age"></span></p>
+                <p><strong>interests:</strong> <span id="modal_interests"></span></p>
+                <p><strong>relationship:</strong> <span id="modal_relationship"></span></p>
+            </div>
+            <button id="modal_follow_btn" class="buttons">Folgen</button>
+        </div>
+    </div>
+
     <script src="dashboard.js"></script>
 </body>
 

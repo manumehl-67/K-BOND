@@ -73,14 +73,32 @@ app.post('/upload-profile-pic', upload.single('profilePic'), (req, res) => {
   }
 });
 
-app.get("/profile-pic/:username", (req, res) => {
-  const { username } = req.params;
-  const user = db.prepare('SELECT profile_pic FROM users WHERE username = ?').get(username);
-  if (user.profile_pic) {
-    res.sendFile(path.resolve("../Backend/" + user.profile_pic));
-  } else {
-    res.status(404).json({ error: "Bild nicht gefunden" });
-  }
+app.get('/following-list/:userId', (req, res) => {
+    const userId = req.params.userId;
+    try {
+        // Holt alle User-Daten von Personen, denen die userId folgt
+        const following = db.prepare(`
+            SELECT u.id, u.username, u.name, u.surname 
+            FROM users u 
+            JOIN follows f ON u.id = f.following_id 
+            WHERE f.follower_id = ?
+        `).all(userId);
+        res.json(following);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/profile-pic/:username', (req, res) => {
+    const user = db.prepare('SELECT profile_pic FROM users WHERE username = ?').get(req.params.username);
+
+    // Wenn der User existiert UND ein Bild hat
+    if (user && user.profile_pic) {
+        res.sendFile(path.join(__dirname, user.profile_pic));
+    } else {
+        // Fallback: Der Server schickt das Standardbild aus deinem Assets-Ordner
+        res.sendFile(path.join(__dirname, '../_Frontend/assets/default-avatar.png'));
+    }
 });
 
 // 2. Schritt: Route auf 'async' setzen
@@ -129,10 +147,20 @@ app.post('/login', async (req, res) => {
 
     if (match) {
       // Erfolg: Schicke User-Daten (ohne Passwort!) zurück
-      res.json({
-        message: "Login erfolgreich",
-        user: { id: user.id, name: user.name, surname: user.surname, username: user.username }
-      });
+      // server.js -> app.post('/login', ...)
+res.json({
+    message: 'Login erfolgreich',
+    user: { 
+        id: user.id, 
+        username: user.username, 
+        name: user.name, 
+        surname: user.surname,
+        age: user.age,
+        interests: user.interests,
+        relationship: user.relationship,
+        profile_pic: user.profile_pic
+    }
+});
     } else {
       res.status(401).json({ error: "Passwort falsch" });
     }
@@ -200,12 +228,13 @@ app.post('/follow', (req, res) => {
 });
 
 // 2. Profil-Details eines anderen Users abrufen
+// In server.js
 app.get('/user-profile/:id', (req, res) => {
     const userId = req.params.id;
     try {
-        const user = db.prepare('SELECT id, username, name, surname, age, interests, relationship FROM users WHERE id = ?').get(userId);
+        // profile_pic zum SELECT hinzugefügt
+        const user = db.prepare('SELECT id, username, name, surname, age, interests, relationship, profile_pic FROM users WHERE id = ?').get(userId);
         
-        // Zähler berechnen
         const followers = db.prepare('SELECT COUNT(*) as count FROM follows WHERE following_id = ?').get(userId).count;
         const following = db.prepare('SELECT COUNT(*) as count FROM follows WHERE follower_id = ?').get(userId).count;
 
@@ -214,5 +243,6 @@ app.get('/user-profile/:id', (req, res) => {
         res.status(404).json({ error: "User nicht gefunden" });
     }
 });
+
 
 app.listen(3000, () => console.log("Server läuft auf Port 3000"));
