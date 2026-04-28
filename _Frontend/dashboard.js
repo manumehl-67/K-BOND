@@ -159,8 +159,8 @@ searchInput.addEventListener("input", async () => {
                     </div>
                 </div>
                 <div class="button-group">
-                    <button class="buttons" onclick="viewProfile(${user.id})">Profil ansehen</button>
-                    <button class="buttons follow-btn" onclick="followUser(${user.id})">Folgen</button>
+                    <button class="buttons" onclick="viewProfile(${user.id})">View Profile</button>
+                    <button class="buttons follow-btn" onclick="followUser(${user.id})">Follow</button>
                 </div>
             `;
             searchResults.appendChild(userDiv);
@@ -170,7 +170,7 @@ searchInput.addEventListener("input", async () => {
     }
 });
 
-// In dashboard.js die displayUsers Funktion anpassen
+// Angepasse displayUsers Funktion in dashboard.js
 function displayUsers(users) {
     const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
     searchResults.innerHTML = ""; 
@@ -183,8 +183,8 @@ function displayUsers(users) {
         userDiv.innerHTML = `
             <p><strong>${user.name} ${user.surname}</strong> (@${user.username})</p>
             <div class="button-group">
-                <button class="buttons" onclick="viewProfile(${user.id})">Profil ansehen</button>
-                <button class="buttons follow-btn" onclick="followUser(${user.id})">Folgen</button>
+                <button class="buttons" onclick="viewProfile(${user.id})">View Profile</button>
+                <button class="buttons follow-btn" onclick="followUser(${user.id})">Follow</button>
             </div>
         `;
         searchResults.appendChild(userDiv);
@@ -203,7 +203,7 @@ async function loadFollowingList() {
         listContainer.innerHTML = ""; // Leeren
 
         if (followingUsers.length === 0) {
-            listContainer.innerHTML = '<p class="empty-msg">Du folgst noch niemandem.</p>';
+            listContainer.innerHTML = '<p class="empty-msg">You are not following anyone yet.</p>';
             return;
         }
 
@@ -240,7 +240,7 @@ async function followUser(followingId) {
         const result = await response.json();
         if (response.ok) {
             alert(result.message);
-            // Hier könnte man den eigenen Counter im UI sofort aktualisieren
+
         } else {
             alert(result.error);
         }
@@ -256,16 +256,16 @@ async function viewProfile(userId) {
         const response = await fetch(`http://localhost:3000/user-profile/${userId}`);
         const user = await response.json();
 
-        // Einfaches Alert für den Anfang (oder baue ein schönes Div/Modal)
+        // Einfaches Alert erstellt
         alert(`
-            Profil von ${user.name} ${user.surname}
+            Profile of ${user.name} ${user.surname}
             -----------------------------------
             Username: @${user.username}
-            Alter: ${user.age || '-'}
-            Interessen: ${user.interests || '-'}
-            Status: ${user.relationship || '-'}
+            Age: ${user.age || '-'}
+            Interests: ${user.interests || '-'}
+            Relationship Status: ${user.relationship || '-'}
             -----------------------------------
-            Follower: ${user.followers} | Folgt: ${user.following}
+            Follower: ${user.followers} | Following: ${user.following}
         `);
     } catch (error) {
         alert("Fehler beim Laden des Profils");
@@ -284,7 +284,7 @@ async function loadMyStats() {
         // Den Text im HTML aktualisieren (ID: my_stats muss im HTML existieren)
         const statsElement = document.getElementById("my_stats");
         if (statsElement) {
-            statsElement.innerText = `Follower: ${data.followers} | Gefolgt: ${data.following}`;
+            statsElement.innerText = `Follower: ${data.followers} | Following: ${data.following}`;
         }
     } catch (error) {
         console.error("Fehler beim Laden der Stats:", error);
@@ -309,9 +309,9 @@ async function viewProfile(userId) {
         document.getElementById("modal_age").innerText = user.age || '-';
         document.getElementById("modal_interests").innerText = user.interests || '-';
         document.getElementById("modal_relationship").innerText = user.relationship || '-';
-        document.getElementById("modal_stats").innerText = `Follower: ${user.followers} | Gefolgt: ${user.following}`;
+        document.getElementById("modal_stats").innerText = `Follower: ${user.followers} | Following: ${user.following}`;
         
-        // Profilbild laden (Nutzt die Route aus deinem Backend)
+        // Profilbild laden (Nutzt die Route aus dem Backend)
         document.getElementById("modal_profile_pic").src = `http://localhost:3000/profile-pic/${user.username}`;
 
         // Follow-Button Funktionalität im Modal

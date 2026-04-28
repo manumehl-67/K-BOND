@@ -122,13 +122,13 @@ login_button_submit.addEventListener("click", () => {
     })
         .then(response => {
             if (response.ok) {
-                return response.json(); // Wir erwarten ein JSON vom Server bei Erfolg
+                return response.json(); // Es wird ein JSON vom Server bei Erfolg erwartet
             } else {
                 throw new Error('Login fehlgeschlagen');
             }
         })
         .then(userData => {
-            // Neu: Daten im Browser merken
+            // Daten werden im Browser gespeichert
             localStorage.setItem("loggedInUser", JSON.stringify(userData.user));
             // UI aktualisieren (wie bisher)
             //updateUI(userData.user);
