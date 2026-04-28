@@ -31,8 +31,8 @@ Um das Projekt lokal zu starten, müssen folgende Schritte ausgeführt werden:
     Im Terminal eingeben:
         node server.js
 5. Frontend öffnen
-    index.html im Browser öffnen via Live-Server
-
+    index.html im Browser öffnen via "Go Live"
+    
 
 Die Features unseres Programms:
 
