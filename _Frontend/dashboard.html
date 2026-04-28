@@ -12,18 +12,27 @@
 <body id="header" class="dashboard-layout">
 
     <h2 id="welcome_text"></h2>
-    <div id="user_profile">
-        <img id="display_profile_pic" src="assets/default-avatar.png" alt="Profile Picture">
-        <div id="surname_name">surname name</div>
-        <div id="profile_username">@username</div>
-        <p id="my_stats">Follower: 0 | Gefolgt: 0</p>
-        <button id="logout_button" class="buttons">Logout</button>
-        <button id="edit_profile_button" class="buttons">Edit Profile</button>
-        <div id="profile_information">
-            <div>age: <span id="display_age"></span></div>
-            <div>interests: <span id="display_interests"></span></div>
-            <div>relationship status: <span id="display_relationship"></span></div>
+    <div class="top-section">
+        <div id="user_profile">
+            <img id="display_profile_pic" src="assets/default-avatar.png" alt="Profile Picture">
+            <div id="surname_name">surname name</div>
+            <div id="profile_username">@username</div>
+            <p id="my_stats">Follower: 0 | Gefolgt: 0</p>
+            <button id="logout_button" class="buttons">Logout</button>
+            <button id="edit_profile_button" class="buttons">Edit Profile</button>
+            <div id="profile_information">
+                <div>age: <span id="display_age"></span></div>
+                <div>interests: <span id="display_interests"></span></div>
+                <div>relationship status: <span id="display_relationship"></span></div>
+            </div>
         </div>
+
+        <div id="following_list_container">
+            <h3>Ich folge</h3>
+            <div id="following_list">
+                <p class="empty-msg">Du folgst noch niemandem.</p>
+        </div>
+    </div>
     </div>
 
     <div id="edit_container" class="hidden">

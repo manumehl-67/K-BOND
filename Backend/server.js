@@ -73,14 +73,32 @@ app.post('/upload-profile-pic', upload.single('profilePic'), (req, res) => {
   }
 });
 
-app.get("/profile-pic/:username", (req, res) => {
-  const { username } = req.params;
-  const user = db.prepare('SELECT profile_pic FROM users WHERE username = ?').get(username);
-  if (user.profile_pic) {
-    res.sendFile(path.resolve("../Backend/" + user.profile_pic));
-  } else {
-    res.status(404).json({ error: "Bild nicht gefunden" });
-  }
+app.get('/following-list/:userId', (req, res) => {
+    const userId = req.params.userId;
+    try {
+        // Holt alle User-Daten von Personen, denen die userId folgt
+        const following = db.prepare(`
+            SELECT u.id, u.username, u.name, u.surname 
+            FROM users u 
+            JOIN follows f ON u.id = f.following_id 
+            WHERE f.follower_id = ?
+        `).all(userId);
+        res.json(following);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/profile-pic/:username', (req, res) => {
+    const user = db.prepare('SELECT profile_pic FROM users WHERE username = ?').get(req.params.username);
+
+    // Wenn der User existiert UND ein Bild hat
+    if (user && user.profile_pic) {
+        res.sendFile(path.join(__dirname, user.profile_pic));
+    } else {
+        // Fallback: Der Server schickt das Standardbild aus deinem Assets-Ordner
+        res.sendFile(path.join(__dirname, '../_Frontend/assets/default-avatar.png'));
+    }
 });
 
 // 2. Schritt: Route auf 'async' setzen
@@ -225,5 +243,6 @@ app.get('/user-profile/:id', (req, res) => {
         res.status(404).json({ error: "User nicht gefunden" });
     }
 });
+
 
 app.listen(3000, () => console.log("Server läuft auf Port 3000"));
