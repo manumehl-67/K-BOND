@@ -21,18 +21,16 @@ In diesem Projekt sind folgende Bereiche enthalten:
 
 Um das Projekt lokal zu starten, müssen folgende Schritte ausgeführt werden:
 
-1. Repository klonen
-2. Abhängigkeit erstellen
-    Im Terminal den Backend-Ordner eingeben:
-        npm install express better-sqlite3 bcrypt cors multer
-3. Datenbank initialisieren
-    Der Server erstellt die database.db automatisch beim ersten Start
+1. Github-Release herunterladen
+2. Node installieren.
+        Link: https://nodejs.org/en/download
 4. Server starten
     Im Terminal eingeben:
+        cd backend
         node server.js
 5. Frontend öffnen
     index.html im Browser öffnen via "Go Live"
-    
+
 
 Die Features unseres Programms:
 
